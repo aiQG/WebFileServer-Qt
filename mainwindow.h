@@ -15,7 +15,18 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+private slots:
+    void on_selectButton_clicked();
+
+    void on_downloadButton_clicked();
+
+    void on_uploadButton_clicked();
+
 private:
+    QString filePath;   //upload
+    QString fileName;   //download
+
+
     Ui::MainWindow *ui;
 };
 #endif // MAINWINDOW_H
