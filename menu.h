@@ -7,6 +7,12 @@
 #include <iostream>
 #include <string>
 
+
+#include <QCryptographicHash>
+#include <QFile>
+#include <QTextStream>
+
+
 #define BUFFER_SIZE 1024
 class menu
 {

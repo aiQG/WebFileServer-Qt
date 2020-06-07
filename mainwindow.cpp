@@ -3,6 +3,8 @@
 #include <QFileDialog>
 #include "menu.h"
 
+
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -41,6 +43,11 @@ void MainWindow::on_downloadButton_clicked()
         this->ui->messageLabel->setText("create file fail");
     } else if(retVal == 0) {
         this->ui->messageLabel->setText("Success");
+        //---
+        //解密
+        //文件名删除enc
+        //删除加密的文件
+        //---
     }
     return;
 }
@@ -53,15 +60,36 @@ void MainWindow::on_uploadButton_clicked()
     menu Menu = menu();
     Menu.selectedFunction = 1;  //upload
     Menu.showMenu();
-
+    //---
+    //加密
+    //文件名加enc
+    //---
     int retVal = Menu.upload(c_str2);
-    if(retVal == -1) {
-        this->ui->messageLabel->setText("file not exist");
-    } else if(retVal == -2) {
-        this->ui->messageLabel->setText("Server-side error");
-    } else if(retVal == 0) {
+
+    switch (retVal) {
+    case 0:
         this->ui->messageLabel->setText("Success");
+        break;
+    case -1:
+        this->ui->messageLabel->setText("Local file not exist");
+        break;
+    case -2:
+        this->ui->messageLabel->setText("Server-side error");
+        break;
+    case -3:
+        this->ui->messageLabel->setText("Hash read error");
+        break;
+    case -4:
+        this->ui->messageLabel->setText("Hash exist");
+        break;
+    case -5:
+        this->ui->messageLabel->setText("Can not open hashFile");
+        break;
     }
+
+    //---
+    //删除加密的文件
+    //---
     return;
 }
 

@@ -86,11 +86,37 @@ int menu::upload(char *filename)
     {
         char x[] = "\xFF";
         send(this->sock, x, strlen(x), 0);
-        std::cout << "file not exist" << std::endl;
+        std::cout << "Local file not exist" << std::endl;
 
         return -1;
     }
 
+    // 文件存在则计算hash
+    QFile fphash(filename);
+    if (!fphash.open(QIODevice::ReadOnly | QIODevice::Text))
+            return -3;
+    QTextStream in(&fphash);
+    QString str = in.readAll();
+
+    QString hash = QString("%1").arg(QString(QCryptographicHash::hash(str.toUtf8(),QCryptographicHash::Sha1).toHex()));
+    //QString to char*
+    QByteArray sha1temp = hash.toLocal8Bit();
+    char* sha1Code = sha1temp.data();
+    //发送hash
+    send(this->sock, sha1Code, strlen(sha1Code), 0);
+
+    recv(this->sock, buffer, 1, 0);
+    if (*buffer == 'H')
+    {
+        std::cout << "Hash exist" << std::endl;
+        return -4;
+    } else if (*buffer == 'N')
+    {
+        std::cout << "Can not open hashFile" << std::endl;
+        return -5;
+    }
+
+    //提取出文件名
     char filename_srever[100] = {0};
     for(int i = 0, j = 0; i < strlen(filename); i++) {
         if(filename[i] == '/') {
