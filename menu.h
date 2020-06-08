@@ -12,6 +12,8 @@
 #include <QFile>
 #include <QTextStream>
 
+#include <aes.hpp>
+
 
 #define BUFFER_SIZE 1024
 class menu

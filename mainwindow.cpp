@@ -60,10 +60,7 @@ void MainWindow::on_uploadButton_clicked()
     menu Menu = menu();
     Menu.selectedFunction = 1;  //upload
     Menu.showMenu();
-    //---
-    //加密
-    //文件名加enc
-    //---
+
     int retVal = Menu.upload(c_str2);
 
     switch (retVal) {
